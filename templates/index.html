@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Guard | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="brand">
+                <div class="logo-icon"></div>
+                <h1>Vision Guard</h1>
+            </div>
+            
+            <div class="metrics-container">
+                <h2>System Health</h2>
+                
+                <div class="metric-card">
+                    <span class="metric-label">Processing Speed</span>
+                    <span class="metric-value" id="fps">0.0 <small>FPS</small></span>
+                </div>
+                
+                <div class="metric-card">
+                    <span class="metric-label">Pipeline Latency</span>
+                    <span class="metric-value" id="latency">0.0 <small>ms</small></span>
+                </div>
+                
+                <div class="metric-card">
+                    <span class="metric-label">CPU Load</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="cpu-bar" style="width: 0%"></div>
+                    </div>
+                    <span class="metric-value small" id="cpu">0%</span>
+                </div>
+            </div>
+
+            <div class="status-indicator">
+                <div class="pulse-ring"></div>
+                <span>Live Surveillance Active</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar glass-panel">
+                <div class="page-title">
+                    <h2>Live Monitor</h2>
+                    <p>HackZen 2026 Challenge Edition</p>
+                </div>
+                <div class="clock" id="clock">00:00:00</div>
+            </header>
+
+            <div class="video-container glass-panel">
+                <div class="video-overlay"></div>
+                <img src="{{ url_for('video_feed') }}" alt="Live Feed" class="video-feed" id="video-feed">
+            </div>
+
+            <!-- Alerts Panel -->
+            <div class="alerts-panel glass-panel">
+                <h3><span class="alert-icon">⚠️</span> Recent Alerts</h3>
+                <ul class="alert-list" id="alert-list">
+                    <li class="alert-item empty-state">No critical alerts detected in the current session.</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

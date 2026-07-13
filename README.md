@@ -1,70 +1,76 @@
-# Vision Guard: Classical Computer Vision for Industrial Safety Compliance
+<div align="center">
+  
+# 🛡️ Vision Guard
+**Classical Computer Vision for Industrial Safety Compliance**
 
-## Team Details
-- **Team Name**: (Enter Team Name)
-- **Members**: Jineth B (jinethB2006)
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.8.0-green.svg)](https://opencv.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.0.0-lightgrey.svg)](https://flask.palletsprojects.com/)
 
-## Problem Statement
-In the contemporary industrial landscape, occupational safety is governed by stringent international and national standards. Monitoring compliance across vast manufacturing plants remains a critical operational challenge. Modern automated compliance systems rely heavily on Deep Learning (DL) and Artificial Intelligence (AI). However, deep learning models require immense computational overhead, lack determinism (the "Black Box" problem hindering safety certification), and suffer from data dependency leading to edge-case failures.
+*Built for the HackZen 2026 Open Challenge* 🚀
 
-## Objective
-To develop a lightning-fast, computationally inexpensive, and mathematically deterministic industrial safety compliance monitoring system using exclusively Classical Computer Vision techniques, rendering it ideal for low-power edge deployment in safety-critical manufacturing environments.
+</div>
 
-## Proposed Solution
-The "Vision Guard" system abandons heavy computational graphs of neural networks in favor of a modular, pipeline-driven classical OpenCV architecture. It uses explicit geometry, matrix calculus, and pixel-level statistical analysis to provide deterministic safety monitoring. 
+---
 
-For the HackZen 2026 demonstration, the system implements three core safety modules:
-1. **Deterministic ArUco-Based Lockout/Tagout & Tracking**: Tracks worker identity and position deterministically via ArUco fiducial markers.
-2. **Dynamic Machine Guard Proximity Tripwires (Danger Zone)**: Implements Point-in-Polygon mathematical bounding to detect restricted zone intrusions instantaneously.
-3. **Conveyor Belt Jam Detection via Vector Field Divergence**: Uses Farneback Dense Optical Flow to calculate motion across a conveyor belt, triggering jam alerts when motion velocity drops.
+## 👋 Hey there!
 
-## Technologies Used
-- Python 3.10+
-- OpenCV (cv2)
-- NumPy
+Welcome to **Vision Guard**! Have you ever noticed how modern industrial safety systems heavily rely on massive, power-hungry AI models? They need expensive GPUs, they're hard to certify for safety because they act like "black boxes," and a simple lighting change can break them completely.
 
-## Dataset
-No datasets are required! A primary advantage of the Vision Guard system is its deterministic, zero-AI nature. It relies on mathematical rules rather than learned weights, entirely bypassing the need for training data, annotation, and domain adaptation.
+We decided to take a step back and solve this problem using pure, foundational mathematics. **Vision Guard** is a lightning-fast, highly deterministic safety compliance monitor built entirely on Classical Computer Vision (OpenCV) algorithms. 
 
-## Methodology / Model Architecture
-Data flows sequentially through highly optimized C++ algorithms wrapped in Python bindings:
-`[ Input Camera ] -> [ Image Processing ] -> [ Feature Extraction ] -> [ Tracking ] -> [ Decision Engine ] -> [ Alert System ] -> [ Dashboard ]`
+No deep learning. No training data bias. Just pure geometry and calculus running on a standard CPU. 🧠⚙️
 
-1. **Tracker Module (`tracker.py`)**: Uses `cv2.aruco` to detect rigid corner matrices and project spatial coordinates.
-2. **Intrusion Module (`intrusion.py`)**: Uses `cv2.pointPolygonTest` to evaluate if the tracked Cartesian centroid intersects the danger zone boundary.
-3. **Optical Flow Module (`flow.py`)**: Uses `cv2.calcOpticalFlowFarneback` to extract a dense vector field of motion and averages the magnitude to detect mechanical stall.
+---
 
-## Installation & Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/jinethB2006/OPEN-CV-PROJECT.git
-   cd OPEN-CV-PROJECT
-   ```
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Ensure you have a standard webcam connected (or provide a video file).
+## ✨ What Does It Do?
 
-## Usage Instructions
-Run the main system pipeline:
+For our HackZen 2026 demo, we've built three core safety features designed to monitor a live industrial diorama:
+
+1. **📍 ArUco Worker Tracking**: Instead of guessing if someone is a person, we track authorized personnel using deterministic ArUco fiducial markers. It's foolproof and requires zero inference time.
+2. **⚠️ Danger Zone Intrusion**: We set up a digital tripwire using Point-in-Polygon mathematics. If a worker steps into the restricted zone, the system flags it instantly.
+3. **🛑 Conveyor Jam Detection**: Using Farneback Dense Optical Flow, we analyze the micro-movements of a conveyor belt. If the velocity vectors drop to zero, we know the belt has jammed and trigger an immediate hazard alert.
+
+All of this is presented in a beautiful, real-time **Glassmorphic Web Dashboard** that streams the camera feed and logs critical alerts!
+
+---
+
+## 🛠️ How to Run It
+
+It's super easy to get this up and running on your local machine.
+
+### 1. Clone the project
 ```bash
-python main.py
-```
-*(Optional)* To use a specific video file instead of the webcam:
-```bash
-python main.py --source demo_video.mp4
+git clone https://github.com/jinethB2006/OPEN-CV-PROJECT.git
+cd OPEN-CV-PROJECT
 ```
 
-## Results and Outputs
-- **Real-Time Performance**: The system processes high-resolution frames with single-digit millisecond latency (displaying real-time FPS and latency on the dashboard overlay).
-- **Deterministic Alerts**: Intrusions and machine jams trigger instantaneous terminal logs and visual bounding box color shifts (Green to Red).
-- **Zero-Latency Response**: Outperforms standard YOLO-based models running on CPU by achieving real-time >60 FPS performance without dedicated GPUs.
+### 2. Install dependencies
+We just need OpenCV, NumPy, and Flask.
+```bash
+pip install -r requirements.txt
+```
 
-## Future Scope
-If deep learning constraints were lifted, the system could integrate YOLOv11 for robust semantic feature extraction (ignoring complex lighting artifacts) and use DeepSORT for Re-Identification during prolonged total occlusions, creating a hybrid deterministic/semantic tracking pipeline. Furthermore, integration with hardware (e.g., Modbus TCP signals to PLCs) would allow the system to physically halt machinery upon detecting a violation.
+### 3. Start the Server!
+Make sure your webcam is plugged in, and run:
+```bash
+python app.py
+```
+Then, open up your favorite web browser and go to `http://localhost:5000` to see the beautiful dashboard in action! 🎨
 
-## References
-- *Classical CV Safety Monitor Research*, Vision Guard System Architecture, 2026.
-- OpenCV Documentation (Optical Flow, ArUco, Geometry): https://docs.opencv.org/
-- OSHA 1910.212 (General requirements for all machines)
+---
+
+## 🏗️ Under the Hood (For the Geeks)
+
+Curious about how it works without AI?
+- **Backend**: A lightweight Flask server (`app.py`) captures the video, processes it through our classical CV modules, and streams it via an MJPEG HTTP feed.
+- **Frontend**: A custom HTML/CSS/JS dashboard featuring smooth gradients, dynamic API polling, and a modern dark-mode aesthetic.
+- **CV Pipeline**: The video frames go through `cv2.aruco.detectMarkers`, `cv2.pointPolygonTest`, and `cv2.calcOpticalFlowFarneback`. Because we use classical algorithms, we can achieve over 60 FPS on standard CPUs with single-digit millisecond latency. 
+
+---
+
+## 🚀 Future Scope
+While this was built specifically for the HackZen constraints, in the real world, we'd love to combine this deterministic logic with semantic deep learning (like YOLOv11) to get the best of both worlds: extreme robustness against lighting changes combined with absolute mathematical certainty.
+
+---
+*Created by Jineth B (jinethB2006) for HackZen 2026. Build. Innovate. Qualify.*
